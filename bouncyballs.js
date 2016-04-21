@@ -1,15 +1,13 @@
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 
-
-
-
-
-
-var Ball = function(x, y, radius){
-  this.x = x;
-  this.y = y;
-  this.radius = radius;
+var Ball = function(x, y, radius, dx, dy, color){
+  this.x = x || canvas.width / 2;
+  this.y = y || canvas.height / 2;
+  this.radius = radius || 20;
+  this.dx = dx || 10;
+  this.dy = dy || 10;
+  this.color = color || '#FFFFFF';
 };
 
 Ball.prototype.draw = function(){
@@ -26,6 +24,7 @@ Ball.prototype.setX = function(x){
 Ball.prototype.setY = function(y){
   this.y = y;
 };
+
 
 
 
