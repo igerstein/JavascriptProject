@@ -68,11 +68,20 @@ addBallButton.addEventListener("click", function(){
 	var y = Math.floor(Math.random() * (canvas.height - 60)) + 30;
 	var radius = Math.floor(Math.random() * 20) + 5;
     } while (overlapping(x, y, radius));
-    var dx = Math.floor(Math.random() * 10) - 4;
-    var dy = Math.floor(Math.random() * 10) - 4;
+    var dx = Math.floor(Math.random() * 11) - 5;
+    var dy = Math.floor(Math.random() * 11) - 5;
+    if (dx == 0 && dy == 0){
+	dx = 1;
+	dy = 1;
+    }
     var color = randomColor();
     var ball = new Ball(x, y, radius, dx, dy, color);
     ballpen.push(ball);
+});
+
+var removeBall = document.getElementById("removeBall");
+removeBall.addEventListener("click", function(){
+    ballpen.pop();
 });
 
 var increase = document.getElementById("increase");
@@ -93,6 +102,26 @@ randomColors.addEventListener("click", function(){
     ballpen = ballpen.map(function(ball){
 	ball.color = randomColor();
 	return ball;
+    });
+});
+
+var randomDirections = document.getElementById("randomDirections");
+randomDirections.addEventListener("click", function(){
+    ballpen = ballpen.map(function(ball){
+	ball.dx = Math.floor(Math.random() * 11) - 5;
+	ball.dy = Math.floor(Math.random() * 11) - 5;
+	if (ball.dx == 0 && ball.dy == 0){
+	    ball.dx = 1;
+	    ball.dy = 1;
+	}
+	return ball;
+    });
+});
+
+var removeFast = document.getElementById("removeFast");
+removeFast.addEventListener("click", function(){
+    ballpen = ballpen.filter(function(ball){
+	return Math.pow(ball.dx, 2) + Math.pow(ball.dy, 2) < 20;
     });
 });
 
