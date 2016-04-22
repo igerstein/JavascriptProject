@@ -2,6 +2,7 @@ var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 var ballpen = [];
 var id;
+var frames = [];
 
 var Ball = function(x, y, radius, dx, dy, color){
   this.x = x || canvas.width / 2;
@@ -56,6 +57,7 @@ var startAnimate = function(){
   };
 
   id = window.requestAnimationFrame(animate);
+  frames.push(id);
 };
 
 
@@ -67,8 +69,8 @@ addBallButton.addEventListener('click', function(){
     var y = Math.floor(Math.random() * (canvas.height - 60)) + 30;
     var radius = Math.floor(Math.random() * 20) + 5;
   } while (overlapping(x, y, radius));
-  var dx = 1;
-  var dy = 1;
+  var dx = Math.floor(Math.random() * 10) - 4;
+  var dy = Math.floor(Math.random() * 10) - 4;
   var color = randomColor();
   var ball = new Ball(x, y, radius, dx, dy, color);
   ballpen.push(ball);
@@ -82,6 +84,15 @@ increase.addEventListener('click', function(){
 var decrease = document.getElementById('decrease');
 decrease.addEventListener('click', function(){
   window.cancelAnimationFrame(id);
+  frames.pop(frames.length - 1);
+});
+
+var stop = document.getElementById('stop');
+stop.addEventListener('click', function(){
+    console.log(frames);
+    for (var frameindex in frames){
+	window.cancelAnimationFrame(frames.pop(frameindex));
+    }
 });
 
 var randomColor = function(){
