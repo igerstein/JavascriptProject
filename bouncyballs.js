@@ -1,6 +1,7 @@
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 var ballpen = [];
+var id;
 
 var Ball = function(x, y, radius, dx, dy, color){
   this.x = x || canvas.width / 2;
@@ -54,26 +55,33 @@ var startAnimate = function(){
     id = window.requestAnimationFrame(animate);
   };
 
-  var id = window.requestAnimationFrame(animate);
+  id = window.requestAnimationFrame(animate);
 };
 
 
 
 var addBallButton = document.getElementById('addBallButton');
 addBallButton.addEventListener('click', function(){
-  var x = Math.floor(Math.random() * (canvas.width - 40)) + 20;
-  var y = Math.floor(Math.random() * (canvas.height - 40)) + 20;
-  var radius = Math.floor(Math.random() * 25) + 5;
-  var dx = Math.floor(Math.random() * 10) + 1;
-  var dy = Math.floor(Math.random() * 10) + 1;
+  do {
+    var x = Math.floor(Math.random() * (canvas.width - 60)) + 30;
+    var y = Math.floor(Math.random() * (canvas.height - 60)) + 30;
+    var radius = Math.floor(Math.random() * 20) + 5;
+  } while (overlapping(x, y, radius));
+  var dx = 1;
+  var dy = 1;
   var color = randomColor();
   var ball = new Ball(x, y, radius, dx, dy, color);
   ballpen.push(ball);
 });
 
-var startButton = document.getElementById('startButton');
-startButton.addEventListener('click', function(){
+var increase = document.getElementById('increase');
+increase.addEventListener('click', function(){
   startAnimate();
+});
+
+var decrease = document.getElementById('decrease');
+decrease.addEventListener('click', function(){
+  window.cancelAnimationFrame(id);
 });
 
 var randomColor = function(){
@@ -93,4 +101,17 @@ var randomColor = function(){
   }else{
     return "purple";
   }
+};
+
+var overlapping = function(x, y, radius){
+  for(var ballkey in ballpen){
+    var ball = ballpen[ballkey];
+    diffRadiiSquared = Math.pow(radius - ball.radius, 2);
+    distCentersSquared = Math.pow(x - ball.x, 2) + Math.pow(y - ball.y, 2);
+    sumRadiiSquared = Math.pow(radius + ball.radius, 2);
+    if (diffRadiiSquared <= distCentersSquared && distCentersSquared <= sumRadiiSquared){
+      return true;	
+    }
+  }
+  return false;
 };
